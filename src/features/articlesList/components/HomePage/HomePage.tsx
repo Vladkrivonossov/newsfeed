@@ -17,7 +17,9 @@ import { getCategories } from '@features/categories/selectors';
 import { getSources } from '@features/sources/selectors';
 import { HeroSkeleton } from '@components/Hero/HeroSkeleton';
 import { ArticleCardSkeleton } from '@components/ArticleCard/ArticleCardSkeleton';
+import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
 import { repeat } from '@app/utils';
+import { useResize, Version } from '@app/hooks';
 
 export const HomePage: FC = () => {
   const dispatch = useDispatch<Dispatch>();
@@ -26,7 +28,8 @@ export const HomePage: FC = () => {
   const karpovArticles = useSelector(getCategoryNews(categoryIds['karpov.courses']));
   const categories = useSelector(getCategories);
   const sources = useSelector(getSources);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
+  const { version } = useResize();
 
   React.useEffect(() => {
     setLoading(true);
@@ -38,8 +41,6 @@ export const HomePage: FC = () => {
       setLoading(false);
     });
   }, []);
-
-  const firstArticle = articles[0];
 
   if (loading) {
     return (
@@ -76,7 +77,7 @@ export const HomePage: FC = () => {
             </section>
             <section className="home-page__sidebar">
               {repeat((i) => {
-                return <ArticleCardSkeleton key={i} className="home-page__sidebar-item" />;
+                return <SidebarArticleCardSkeleton key={i} className="home-page__sidebar-item" />;
               }, 2)}
             </section>
           </div>
@@ -84,6 +85,9 @@ export const HomePage: FC = () => {
       </div>
     );
   }
+
+  const firstArticle = articles[0];
+  const mainArticles = version === Version.mobile ? articles.slice(1) : articles.slice(4);
 
   return (
     <div className="home-page">
@@ -163,7 +167,7 @@ export const HomePage: FC = () => {
       </div>
       <section className="container grid home-page__section">
         <section className="home-page__content">
-          {articles.slice(4).map((item) => {
+          {mainArticles.map((item) => {
             const source = sources.find(({ id }) => item.source_id === id);
 
             return (
@@ -180,23 +184,25 @@ export const HomePage: FC = () => {
             );
           })}
         </section>
-        <section className="home-page__sidebar">
-          {articles.slice(1, 4).map((item) => {
-            const source = sources.find(({ id }) => item.source_id === id);
+        {version === Version.desktop && (
+          <section className="home-page__sidebar">
+            {articles.slice(1, 4).map((item) => {
+              const source = sources.find(({ id }) => item.source_id === id);
 
-            return (
-              <SidebarArticleCard
-                className="home-page__sidebar-item"
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                source={source?.name || ''}
-                date={item.date}
-                image={item.image}
-              />
-            );
-          })}
-        </section>
+              return (
+                <SidebarArticleCard
+                  className="home-page__sidebar-item"
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  source={source?.name || ''}
+                  date={item.date}
+                  image={item.image}
+                />
+              );
+            })}
+          </section>
+        )}
       </section>
     </div>
   );
