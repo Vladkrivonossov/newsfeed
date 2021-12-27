@@ -10,9 +10,9 @@
   --constant-grey2: #a3a3a3;
   --constant-white: #fff;
   --container-width: 940px;
-  --container-padding: 20px;
+  --container-padding: 16px;
   --grid-column-width: 60px;
-  --grid-gap: 20px;
+  --grid-gap: 24px;
   --background-zero: var(--constant-white);
   --background-primary: var(--constant-white);
   --foreground-primary: var(--constant-black);
@@ -54,7 +54,6 @@ body {
   line-height: 20px;
   font-weight: 400;
   color: var(--foreground-primary);
-  min-width: calc(var(--container-width) + 2 * var(--container-padding));
 }
 
 .container {
@@ -65,7 +64,6 @@ body {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(12, var(--grid-column-width));
   gap: var(--grid-gap);
 }
 
@@ -83,5 +81,20 @@ body {
 
   to {
     background-position: -100% 0;
+  }
+}
+
+@media all and (min-width: 1024px) {
+  :root {
+    --container-padding: 20px;
+    --grid-gap: 20px;
+  }
+
+  body {
+    min-width: calc(var(--container-width) + 2 * var(--container-padding));
+  }
+
+  .grid {
+    grid-template-columns: repeat(12, var(--grid-column-width));
   }
 }

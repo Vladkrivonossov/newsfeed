@@ -22,9 +22,7 @@ export const Page: FC<Props> = ({ children }) => {
           localStorage.setItem(LS_EMAIL_SHOWN_KEY, 'true');
           setEmailModalShown(false);
         }}
-      >
-        Hello
-      </EmailModal>
+      ></EmailModal>
       <header className="header">
         <div className="container header__container">
           <Logo />

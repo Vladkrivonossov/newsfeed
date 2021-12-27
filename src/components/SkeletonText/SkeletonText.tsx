@@ -10,7 +10,7 @@ interface SkeletonTextProps {
 
 export const SkeletonText: FC<SkeletonTextProps> = ({ rowsCount = 1, dark = false }) => {
   return (
-    <div
+    <span
       className={classNames('skeleton-text', {
         'skeleton-text--dark': dark,
       })}
@@ -18,6 +18,6 @@ export const SkeletonText: FC<SkeletonTextProps> = ({ rowsCount = 1, dark = fals
       {repeat((i) => {
         return <span key={i} className="skeleton-text__row skeleton-gradient" />;
       }, rowsCount)}
-    </div>
+    </span>
   );
 };
