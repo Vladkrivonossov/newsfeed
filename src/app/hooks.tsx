@@ -8,7 +8,7 @@ export enum Version {
 
 const getVersion = (): Version => (document.body.clientWidth < 1024 ? Version.mobile : Version.desktop);
 
-export const useResize = (): { version: Version } => {
+export const useAdaptive = (): { isMobile: boolean; isDesktop: boolean } => {
   const [version, setVersion] = useState(getVersion());
   const handleResize = throttle(() => {
     setVersion(getVersion());
@@ -22,5 +22,8 @@ export const useResize = (): { version: Version } => {
     };
   }, []);
 
-  return { version };
+  return {
+    isMobile: version === Version.mobile,
+    isDesktop: version === Version.desktop,
+  };
 };

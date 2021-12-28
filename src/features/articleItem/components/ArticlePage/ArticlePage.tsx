@@ -17,7 +17,7 @@ import { fetchRelatedArticles } from '@features/relatedNews/actions';
 import { HeroSkeleton } from '@components/Hero/HeroSkeleton';
 import { SkeletonText } from '@components/SkeletonText/SkeletonText';
 import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
-import { useResize, Version } from '@app/hooks';
+import { useAdaptive } from '@app/hooks';
 
 export const ArticlePage: FC = () => {
   const { id }: { id?: string } = useParams();
@@ -26,7 +26,7 @@ export const ArticlePage: FC = () => {
   const relatedArticles = useSelector(getRelatedArticles(Number(id)));
   const sources = useSelector(getSources);
   const [loading, setLoading] = useState(!articleItem?.text);
-  const { version } = useResize();
+  const { isDesktop } = useAdaptive();
 
   React.useEffect(() => {
     if (!articleItem?.text) {
@@ -58,7 +58,7 @@ export const ArticlePage: FC = () => {
               </p>
             </div>
 
-            {version === Version.desktop && (
+            {isDesktop && (
               <div className="article-page__sidebar">
                 {repeat((i) => {
                   return <SidebarArticleCardSkeleton key={i} className="article-page__sidebar-item" />;
@@ -93,7 +93,7 @@ export const ArticlePage: FC = () => {
             <p>{articleItem.text}</p>
           </div>
 
-          {version === Version.desktop && (
+          {isDesktop && (
             <div className="article-page__sidebar">
               {relatedArticles.slice(3, 9).map((item) => {
                 const source = sources.find(({ id }) => item.source_id === id);

@@ -14,7 +14,7 @@ import { getSources } from '@features/sources/selectors';
 import { HeroSkeleton } from '@components/Hero/HeroSkeleton';
 import { ArticleCardSkeleton } from '@components/ArticleCard/ArticleCardSkeleton';
 import { repeat } from '@app/utils';
-import { useResize, Version } from '@app/hooks';
+import { useAdaptive } from '@app/hooks';
 import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
 import { SidebarArticleCard } from '@components/SidebarArticleCard/SidebarArticleCard';
 
@@ -27,7 +27,7 @@ export const CategoryPage: FC = () => {
   const categories = useSelector(getCategories);
   const sources = useSelector(getSources);
   const [loading, setLoading] = useState(true);
-  const { version } = useResize();
+  const { isMobile, isDesktop } = useAdaptive();
 
   React.useEffect(() => {
     setLoading(true);
@@ -46,7 +46,7 @@ export const CategoryPage: FC = () => {
               return <ArticleCardSkeleton key={i} className="category-page__item" />;
             }, 6)}
           </section>
-          {version === Version.desktop && (
+          {isDesktop && (
             <section className="category-page__sidebar">
               {repeat((i) => {
                 return <SidebarArticleCardSkeleton key={i} className="category-page__sidebar-item" />;
@@ -58,7 +58,7 @@ export const CategoryPage: FC = () => {
     );
   }
 
-  const mainArticles = version === Version.mobile ? articles : articles.slice(3);
+  const mainArticles = isMobile ? articles : articles.slice(3);
 
   return (
     <section className="category-page">
@@ -87,7 +87,7 @@ export const CategoryPage: FC = () => {
             );
           })}
         </section>
-        {version === Version.desktop && (
+        {isDesktop && (
           <section className="category-page__sidebar">
             {articles.slice(0, 3).map((item) => {
               const source = sources.find(({ id }) => item.source_id === id);

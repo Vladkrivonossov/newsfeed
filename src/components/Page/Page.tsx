@@ -1,21 +1,31 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, Fragment, ReactNode, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import './Page.css';
-import { Navigation } from '../Navigation/Navigation';
-import { Logo } from '../Logo/Logo';
-import { ColorSchemeSwitcher } from '@features/colorScheme/components/ColorSchemeSwitcher/ColorSchemeSwitcher';
+import { Navigation } from '@components/Navigation/Navigation';
+import { Logo } from '@components/Logo/Logo';
 import { EmailModal } from '@features/subscribeNotification/components/EmailModal/EmailModal';
+import { Dispatch } from '@app/store';
+import { fetchCategories } from '@features/categories/actions';
+import { fetchSources } from '@features/sources/actions';
+import { Header } from '@components/Header/Header';
 
 const LS_EMAIL_SHOWN_KEY = 'newsfeed:email_modal_shown';
 
-interface Props {
+interface PageProps {
   children: ReactNode;
 }
 
-export const Page: FC<Props> = ({ children }) => {
+export const Page: FC<PageProps> = ({ children }) => {
+  const dispatch = useDispatch<Dispatch>();
   const [emailModalShown, setEmailModalShown] = useState(!localStorage.getItem(LS_EMAIL_SHOWN_KEY));
 
+  React.useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchSources());
+  }, []);
+
   return (
-    <>
+    <Fragment>
       <EmailModal
         shown={emailModalShown}
         onClose={() => {
@@ -23,15 +33,7 @@ export const Page: FC<Props> = ({ children }) => {
           setEmailModalShown(false);
         }}
       ></EmailModal>
-      <header className="header">
-        <div className="container header__container">
-          <Logo />
-          <Navigation className="header__navigation" />
-          <div className="header__controls">
-            <ColorSchemeSwitcher />
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main>{children}</main>
 
@@ -41,14 +43,14 @@ export const Page: FC<Props> = ({ children }) => {
             <Logo />
             <Navigation className="footer__navigation" />
           </div>
-          <div className="footer__column">
-            Сделано на Frontend курсе в
-            <a rel="noreferrer" href="https://karpov.courses/frontend" target="_blank" className="footer__link">
+          <div className="footer__bottom">
+            Сделано на Frontend курсе в{' '}
+            <a className="footer__link" href="https://karpov.courses/frontend" target="_blank" rel="noreferrer">
               Karpov.Courses
             </a>
           </div>
         </div>
       </footer>
-    </>
+    </Fragment>
   );
 };

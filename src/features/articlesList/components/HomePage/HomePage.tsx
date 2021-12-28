@@ -19,7 +19,7 @@ import { HeroSkeleton } from '@components/Hero/HeroSkeleton';
 import { ArticleCardSkeleton } from '@components/ArticleCard/ArticleCardSkeleton';
 import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
 import { repeat } from '@app/utils';
-import { useResize, Version } from '@app/hooks';
+import { useAdaptive } from '@app/hooks';
 
 export const HomePage: FC = () => {
   const dispatch = useDispatch<Dispatch>();
@@ -29,7 +29,7 @@ export const HomePage: FC = () => {
   const categories = useSelector(getCategories);
   const sources = useSelector(getSources);
   const [loading, setLoading] = useState(true);
-  const { version } = useResize();
+  const { isDesktop, isMobile } = useAdaptive();
 
   React.useEffect(() => {
     setLoading(true);
@@ -87,7 +87,7 @@ export const HomePage: FC = () => {
   }
 
   const firstArticle = articles[0];
-  const mainArticles = version === Version.mobile ? articles.slice(1) : articles.slice(4);
+  const mainArticles = isMobile ? articles.slice(1) : articles.slice(4);
 
   return (
     <div className="home-page">
@@ -184,7 +184,7 @@ export const HomePage: FC = () => {
             );
           })}
         </section>
-        {version === Version.desktop && (
+        {isDesktop && (
           <section className="home-page__sidebar">
             {articles.slice(1, 4).map((item) => {
               const source = sources.find(({ id }) => item.source_id === id);
