@@ -1,9 +1,17 @@
-import React from "react";
+import React, {FC} from "react";
 import './SmallArticle.css'
+import {beautifyDate} from '../../utils'
 
-export const SmallArticle = ({title, date, source}) => {
+interface Props {
+    title: string;
+    date: string;
+    source: string;
+    onClick: (event: React.MouseEvent<HTMLElement>) => void;
+}
+
+export const SmallArticle: FC<Props> = ({title, date, source, onClick}) => {
     return (
-        <article className="small-article">
+        <article className="small-article" onClick={onClick}>
             <h2
                 className="small-article__title"
             >
@@ -13,10 +21,7 @@ export const SmallArticle = ({title, date, source}) => {
                 <span
                     className="article-date small-article__date"
                 >
-                    {new Date(date).toLocaleDateString('ru-RU', {
-                        month: 'long',
-                        day: 'numeric',
-                    })}
+                    {beautifyDate(date)}
                 </span>
                 <span
                     className="article-source small-article__source"
