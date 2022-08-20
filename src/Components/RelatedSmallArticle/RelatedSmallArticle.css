@@ -1,10 +1,14 @@
 .related-small-article {
+  display: block;
   margin-bottom: 35px;
+  cursor: pointer;
+}
+
+.related-small-article__container {
   display: grid;
   grid-template-columns: repeat(4, var(--grid-column-width));
   gap: var(--grid-gap);
   align-items: center;
-  cursor: pointer;
 }
 
 .related-small-article:last-child {

@@ -1,15 +1,27 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { MainArticle } from '../MainArticle/MainArticle';
+import { useParams } from 'react-router-dom';
 import { SmallArticle } from '../SmallArticle/SmallArticle';
 import './Articles.css';
 import { NewsAPI } from '../../types';
+import { categoryIds } from '../../utils';
 
-interface Props {
-  articles: NewsAPI;
-  onArticleClick: (id: number) => void;
-}
+export const Articles: FC = () => {
+  const { categoryId = 'index' } = useParams();
+  const [articles, setArticles] = useState<NewsAPI>({
+    items: [],
+    categories: [],
+    sources: [],
+  });
 
-export const Articles: FC<Props> = ({ articles, onArticleClick }) => {
+  useEffect(() => {
+    fetch('https://frontend.karpovcourses.net/api/v2/ru/news/' + categoryIds[categoryId] || '')
+      .then((res) => res.json())
+      .then((res: NewsAPI) => {
+        setArticles(res);
+      });
+  }, [categoryId]);
+
   return (
     <section className="articles">
       <div className="container grid">
@@ -20,13 +32,13 @@ export const Articles: FC<Props> = ({ articles, onArticleClick }) => {
 
             return (
               <MainArticle
-                key={item.title}
+                key={item.id}
+                id={item.id}
                 title={item.title}
                 description={item.description}
                 image={item.image}
                 category={category ? category.name : ''}
                 source={source?.name || ''}
-                onClick={() => onArticleClick(item.id)}
               />
             );
           })}
@@ -37,11 +49,11 @@ export const Articles: FC<Props> = ({ articles, onArticleClick }) => {
 
             return (
               <SmallArticle
-                key={item.title}
+                key={item.id}
+                id={item.id}
                 title={item.title}
                 source={source?.name || ''}
                 date={item.date}
-                onClick={() => onArticleClick(item.id)}
               />
             );
           })}
