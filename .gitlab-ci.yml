@@ -40,6 +40,9 @@ deploy:
     - chmod 600 ~/.ssh/id_rsa
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 600 ~/.ssh/known_hosts
+  environment:
+    name: production
+  resource_group: production
   script:
     - rsync -a --delete dist/ vlad@167.235.128.132:/home/vlad/newsfeed
   only:
