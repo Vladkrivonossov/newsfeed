@@ -45,6 +45,6 @@
   "pre-commit": [
     "stylelint",
     "eslint",
-    "prettier"
+    "prettier-check"
   ]
 }
