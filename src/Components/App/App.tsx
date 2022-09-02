@@ -1,9 +1,11 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Navigation } from '../Navigation/Navigation';
 import { Articles } from '../Articles/Articles';
 import React, { useEffect } from 'react';
-import './App.css';
 import { ArticleItem } from '../ArticleItem/ArticleItem';
+import { Page } from '../Page/Page';
+import { AdminPage } from '../AdminPage/AdminPage';
+import { AdminArticles } from '../AdminArticles/AdminArticles';
+import { AdminArticleItem } from '../AdminArticleItem/AdmintArticlesIte';
 
 export const App = () => {
   const { pathname } = useLocation();
@@ -13,35 +15,55 @@ export const App = () => {
   }, [pathname]);
 
   return (
-    <>
-      <header className="header">
-        <div className="container">
-          <Navigation placement="header" className="header__navigation" />
-        </div>
-      </header>
-
-      <main>
-        <Routes>
-          <Route path="/" element={<Articles />} />
-          <Route path="/:categoryId" element={<Articles />} />
-          <Route path="/article/:id" element={<ArticleItem />} />
-        </Routes>
-      </main>
-
-      <footer className="footer">
-        <div className="container">
-          <Navigation placement="footer" className="footer__navigation" />
-          <div className="footer__column">
-            <p className="footer__text">
-              Сделано на Frontend курсе в
-              <a rel="noreferrer" href="https://karpov.courses/frontend" target="_blank" className="footer__link">
-                Karpov.Courses
-              </a>
-            </p>
-            <p className="footer__copyright">© 2022</p>
-          </div>
-        </div>
-      </footer>
-    </>
+    <Routes>
+      <Route
+        path="/admin"
+        element={
+          <AdminPage>
+            <AdminArticles />
+          </AdminPage>
+        }
+      />
+      <Route
+        path="/admin/create"
+        element={
+          <AdminPage>
+            <AdminArticleItem />
+          </AdminPage>
+        }
+      />
+      <Route
+        path="/admin/edit/:id"
+        element={
+          <AdminPage>
+            <AdminArticleItem />
+          </AdminPage>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <Page>
+            <Articles />
+          </Page>
+        }
+      />
+      <Route
+        path="/:categoryId"
+        element={
+          <Page>
+            <Articles />
+          </Page>
+        }
+      />
+      <Route
+        path="/article/:id"
+        element={
+          <Page>
+            <ArticleItem />
+          </Page>
+        }
+      />
+    </Routes>
   );
 };
