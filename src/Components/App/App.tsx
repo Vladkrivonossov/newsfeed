@@ -6,6 +6,8 @@ import { Page } from '../Page/Page';
 import { AdminPage } from '../AdminPage/AdminPage';
 import { AdminArticles } from '../AdminArticles/AdminArticles';
 import { AdminArticleItem } from '../AdminArticleItem/AdmintArticlesIte';
+import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
+import { LoginContainer } from '../../features/auth/login/LoginContainer';
 
 export const App = () => {
   const { pathname } = useLocation();
@@ -17,29 +19,43 @@ export const App = () => {
   return (
     <Routes>
       <Route
-        path="/admin"
+        path="/login"
         element={
-          <AdminPage>
-            <AdminArticles />
-          </AdminPage>
+          <Page>
+            <LoginContainer />
+          </Page>
         }
       />
-      <Route
-        path="/admin/create"
-        element={
-          <AdminPage>
-            <AdminArticleItem />
-          </AdminPage>
-        }
-      />
-      <Route
-        path="/admin/edit/:id"
-        element={
-          <AdminPage>
-            <AdminArticleItem />
-          </AdminPage>
-        }
-      />
+      <Route element={<PrivateRoute />}>
+        <Route
+          path="/admin"
+          element={
+            <AdminPage>
+              <AdminArticles />
+            </AdminPage>
+          }
+        />
+      </Route>
+      <Route element={<PrivateRoute />}>
+        <Route
+          path="/admin/create"
+          element={
+            <AdminPage>
+              <AdminArticleItem />
+            </AdminPage>
+          }
+        />
+      </Route>
+      <Route element={<PrivateRoute />}>
+        <Route
+          path="/admin/edit/:id"
+          element={
+            <AdminPage>
+              <AdminArticleItem />
+            </AdminPage>
+          }
+        />
+      </Route>
       <Route
         path="/"
         element={

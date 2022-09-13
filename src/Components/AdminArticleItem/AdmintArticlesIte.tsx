@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,22 +9,37 @@ import { CardActionArea } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { InputErrors, InputName, InputRefs, InputValues } from './types';
 import { getErrors, getImage } from './helpers';
+import {
+  createPartnerArticle,
+  deletePartnerArticle,
+  getPartnerArticle,
+  updatePartnerArticle,
+  uploadFile,
+} from '../../api';
 
 export const AdminArticleItem: FC = () => {
   const { id } = useParams();
+  const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const closeSnackbarMessage = () => {
+    setSnackbarMessage(null);
   };
 
   const inputRefs: InputRefs = {
@@ -34,7 +49,7 @@ export const AdminArticleItem: FC = () => {
     text: useRef<HTMLTextAreaElement>(),
     image: useRef<HTMLInputElement>(),
   };
-  const [inputFile, setInputFile] = useState<File | null>(null);
+
   const [inputErrors, setInputErrors] = useState<InputErrors>({
     'company-name': '',
     title: '',
@@ -59,17 +74,35 @@ export const AdminArticleItem: FC = () => {
       [name]: value,
     });
   };
+
+  const deleteArticle = async () => {
+    if (!id) {
+      return;
+    }
+
+    deletePartnerArticle(id)
+      .then(() => {
+        setSnackbarMessage('✔ статья удалена');
+        setInputValues({
+          'company-name': '',
+          title: '',
+          description: '',
+          text: '',
+          image: '',
+        });
+      })
+      .catch((error) => {
+        setSnackbarMessage(`❌  ${error.message}`);
+      });
+  };
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = new FormData();
 
     Object.entries(inputValues).forEach(([name, value]) => {
-      if (name === 'image') {
-        data.append(name, inputFile || new File([], ''));
-      } else {
-        data.append(name, value);
-      }
+      data.append(name, value);
     });
 
     const errors = await getErrors(Array.from(data.entries()) as [InputName, FormDataEntryValue][]);
@@ -90,13 +123,28 @@ export const AdminArticleItem: FC = () => {
       return;
     }
 
-    fetch('https://httpbin.org/post', {
-      method: 'POST',
-      body: data,
-    });
+    if (id) {
+      // редактирование
+      updatePartnerArticle(id, inputValues)
+        .then(() => {
+          setSnackbarMessage('✔ статья обновлена');
+        })
+        .catch((error) => {
+          setSnackbarMessage(`❌  ${error.message}`);
+        });
+    } else {
+      // создание
+      createPartnerArticle(inputValues)
+        .then(() => {
+          setSnackbarMessage('✔ статья создана');
+        })
+        .catch((error) => {
+          setSnackbarMessage(`❌ ${error.message}`);
+        });
+    }
   };
 
-  const showFile = (event: ChangeEvent<HTMLInputElement>) => {
+  const showFile = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.currentTarget.files;
 
     if (files === null || !files.length) {
@@ -109,22 +157,52 @@ export const AdminArticleItem: FC = () => {
       return;
     }
 
-    setInputFile(file);
+    const image = await getImage(file);
 
-    getImage(file).then((image) => {
+    if (image.width < 200 || image.height < 200) {
+      setInputErrors({
+        ...inputErrors,
+        image: 'Размер картинки должен быть не меньше 200х200',
+      });
+      return;
+    }
+
+    try {
+      const url = await uploadFile(file);
+
       setInputValues({
         ...inputValues,
-        image: image.src,
+        image: url,
       });
-    });
+    } catch (error: any) {
+      setSnackbarMessage(`❌ ${error.message}`);
+    }
   };
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    (async () => {
+      const data = await getPartnerArticle(id);
+
+      setInputValues({
+        'company-name': data['company-name'],
+        title: data.title,
+        description: data.description,
+        text: data.text,
+        image: data.image,
+      });
+    })();
+  }, [id]);
 
   return (
     <Box component="form" noValidate onSubmit={onSubmit}>
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid item xs={9}>
           <Typography variant="h4" gutterBottom>
-            {id ? 'Editing' : 'Create new'}
+            {id ? `Editing ${inputValues.title}` : 'Create new'}
           </Typography>
         </Grid>
         <Grid item xs={3}>
@@ -153,7 +231,7 @@ export const AdminArticleItem: FC = () => {
                   open={open}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Remove</MenuItem>
+                  <MenuItem onClick={deleteArticle}>Remove</MenuItem>
                 </Menu>
               </div>
             )}
@@ -242,6 +320,12 @@ export const AdminArticleItem: FC = () => {
           </Card>
         </Grid>
       </Grid>
+      <Snackbar
+        open={typeof snackbarMessage === 'string'}
+        autoHideDuration={6000}
+        onClose={closeSnackbarMessage}
+        message={snackbarMessage}
+      />
     </Box>
   );
 };
