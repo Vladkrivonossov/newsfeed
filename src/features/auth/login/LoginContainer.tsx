@@ -1,5 +1,5 @@
 import React, { Reducer, useReducer, FormEvent, useState } from 'react';
-import { LoginForm, TLoginField } from '@components/LoginForm/LoginForm';
+import { LoginForm, TLoginField } from '../../../Components/LoginForm/LoginForm';
 import './LoginContainer.css';
 import { validateEmail } from './utils';
 import { useAuth } from '../AuthContextProvider';
