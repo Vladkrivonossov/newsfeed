@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
@@ -12,6 +12,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ArticleIcon from '@mui/icons-material/Article';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { IconButton } from '@mui/material';
+import { useAuth } from '../../features/auth/AuthContextProvider';
 
 interface Props {
   children: ReactNode;
@@ -20,14 +23,25 @@ interface Props {
 const drawerWidth = 300;
 
 export const AdminPage: FC<Props> = ({ children }) => {
+  const { logOut } = useAuth();
+  const navigate = useNavigate();
+
+  const onLogOutClick = () => {
+    logOut();
+    navigate('/login');
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Admin-panel
           </Typography>
+          <IconButton color="inherit" onClick={onLogOutClick}>
+            <LogoutIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
