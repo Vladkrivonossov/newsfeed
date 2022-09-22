@@ -1,13 +1,14 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Articles } from '../Articles/Articles';
+import { HomePage } from '../HomePage/HomePage';
 import React, { useEffect } from 'react';
-import { ArticleItem } from '../ArticleItem/ArticleItem';
+import { ArticlePage } from '../ArticlePage/ArticlePage';
 import { Page } from '../Page/Page';
 import { AdminPage } from '../AdminPage/AdminPage';
 import { AdminArticles } from '../AdminArticles/AdminArticles';
 import { AdminArticleItem } from '../AdminArticleItem/AdmintArticlesIte';
 import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
 import { LoginContainer } from '../../features/auth/login/LoginContainer';
+import { CategoryPage } from '../CategoryPage/CategoryPage';
 
 export const App = () => {
   const { pathname } = useLocation();
@@ -51,7 +52,7 @@ export const App = () => {
           path="/admin/edit/:id"
           element={
             <AdminPage>
-              <AdminArticleItem />
+              <HomePage />
             </AdminPage>
           }
         />
@@ -60,15 +61,15 @@ export const App = () => {
         path="/"
         element={
           <Page>
-            <Articles />
+            <HomePage />
           </Page>
         }
       />
       <Route
-        path="/:categoryId"
+        path="/:category"
         element={
           <Page>
-            <Articles />
+            <CategoryPage />
           </Page>
         }
       />
@@ -76,7 +77,7 @@ export const App = () => {
         path="/article/:id"
         element={
           <Page>
-            <ArticleItem />
+            <ArticlePage />
           </Page>
         }
       />

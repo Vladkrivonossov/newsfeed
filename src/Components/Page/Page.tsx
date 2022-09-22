@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import './Page.css';
 import { Navigation } from '../Navigation/Navigation';
+import { Logo } from '../Logo/Logo';
 
 interface Props {
   children: ReactNode;
@@ -10,8 +11,9 @@ export const Page: FC<Props> = ({ children }) => {
   return (
     <>
       <header className="header">
-        <div className="container">
-          <Navigation placement="header" className="header__navigation" />
+        <div className="container header__container">
+          <Logo />
+          <Navigation className="header__navigation" />
         </div>
       </header>
 
@@ -19,15 +21,15 @@ export const Page: FC<Props> = ({ children }) => {
 
       <footer className="footer">
         <div className="container">
-          <Navigation placement="footer" className="footer__navigation" />
+          <div className="footer__top">
+            <Logo />
+            <Navigation className="footer__navigation" />
+          </div>
           <div className="footer__column">
-            <p className="footer__text">
-              Сделано на Frontend курсе в
-              <a rel="noreferrer" href="https://karpov.courses/frontend" target="_blank" className="footer__link">
-                Karpov.Courses
-              </a>
-            </p>
-            <p className="footer__copyright">© 2022</p>
+            Сделано на Frontend курсе в
+            <a rel="noreferrer" href="https://karpov.courses/frontend" target="_blank" className="footer__link">
+              Karpov.Courses
+            </a>
           </div>
         </div>
       </footer>
