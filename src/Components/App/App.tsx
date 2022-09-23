@@ -52,7 +52,7 @@ export const App = () => {
           path="/admin/edit/:id"
           element={
             <AdminPage>
-              <HomePage />
+              <AdminArticleItem />
             </AdminPage>
           }
         />
