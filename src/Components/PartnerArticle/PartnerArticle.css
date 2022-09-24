@@ -1,7 +1,7 @@
 .partner-article {
   padding: 40px 0;
   height: 300px;
-  background: var(--color-primary);
+  background: var(--constant-black);
 }
 
 .partner-article__image-container {
@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-items: center;
   grid-column: 7 / -1;
-  color: var(--color-white);
+  color: var(--constant-white);
 }
 
 .partner-article__image {
