@@ -1,8 +1,8 @@
 import React, { Reducer, useReducer, FormEvent, useState } from 'react';
-import { LoginForm, TLoginField } from '../../../Components/LoginForm/LoginForm';
+import { LoginForm, TLoginField } from '../components/LoginForm/LoginForm';
 import './LoginContainer.css';
 import { validateEmail } from './utils';
-import { ALLOWED_OAUTH_PROVIDERS, useAuth } from '../AuthContextProvider';
+import { ALLOWED_OAUTH_PROVIDERS, useAuthContext } from '../AuthContextProvider';
 import { Link, Typography } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -46,7 +46,7 @@ const reducer = (state: TLoginFieldState, action: TAction): TLoginFieldState => 
 };
 
 export const LoginContainer = () => {
-  const { loginWithEmailAndPass, loginWithPopup } = useAuth();
+  const { loginWithEmailAndPassword, loginWithOauthPopup } = useAuthContext();
   const [authError, setAuthError] = useState('');
   const [emailState, dispatchEmail] = useReducer<Reducer<TLoginFieldState, TAction>>(reducer, {
     name: 'email',
@@ -88,7 +88,7 @@ export const LoginContainer = () => {
     }
 
     if (isValid) {
-      processLogin(loginWithEmailAndPass(emailState.value, passwordState.value));
+      processLogin(loginWithEmailAndPassword(emailState.value, passwordState.value));
     }
   };
 
@@ -96,7 +96,7 @@ export const LoginContainer = () => {
     e.preventDefault();
     const dataset = (e.target as HTMLElement)?.closest<HTMLLinkElement>('.login-oauth-container__item')?.dataset;
     if (dataset?.providerid) {
-      processLogin(loginWithPopup(dataset.providerid));
+      processLogin(loginWithOauthPopup(dataset.providerid));
     }
   };
 

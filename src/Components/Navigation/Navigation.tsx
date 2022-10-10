@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import './Navigation.css';
-import { categoryTitles } from '../../utils';
 import classNames from 'classnames';
+import './Navigation.css';
+import { categoryTitles } from '@features/categories/constants';
 
 interface Props {
   className?: string;

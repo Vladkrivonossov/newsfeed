@@ -10,8 +10,8 @@ const mode = process.env.NODE_ENV || 'production';
 module.exports = {
   mode: mode,
   entry: {
-    main: './src/script.tsx',
-    initColorScheme: './src/initColorScheme.ts',
+    main: './src/index.tsx',
+    initColorScheme: './src/features/colorScheme/initColorScheme.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -42,13 +42,18 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      '@components': path.resolve('./src/components'),
+      '@features': path.resolve('./src/features'),
+      '@app': path.resolve('./src/app'),
+    },
   },
   optimization: {
     runtimeChunk: mode === 'production' ? false : 'single',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './src/app/index.html',
     }),
     new HtmlInlineScriptWebpackPlugin({
       scriptMatchPattern: [/initColorScheme\..+\.js$/],

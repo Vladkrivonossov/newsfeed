@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import './ArticleCard.css';
-import { Source } from '../Source/Source';
 import classNames from 'classnames';
-import { beautifyDate, categoryTitles } from '../../utils';
-import { CategoryNames } from '../../types';
+import './ArticleCard.css';
+import { Source } from '@features/sources/components/Source/Source';
+import { beautifyDate } from '@app/utils';
+import { categoryTitles } from '@features/categories/constants';
+import { CategoryNames } from '@features/categories/types';
 
 interface Props {
   id: number;
@@ -41,14 +42,14 @@ export const ArticleCard: FC<Props> = ({
         className
       )}
     >
-      {hasImage && <img className="article-card__image" src={image} alt="" />}
+      {hasImage && <img className="article-card__image" src={image} alt="article-card__image" />}
       <div className="article-card__content">
         <h2 className="article-card__title">{title}</h2>
         {hasDescription && <span className="article-card__description">{description}</span>}
         <div className="article-card__info">
           {category && category.length && <span className="article-card__category">{categoryTitles[category]}</span>}
-          {date.length && <span className="article-card__date">{beautifyDate(date)}</span>}
-          {source.length && <Source className="article-card__source">{source}</Source>}
+          {date && <span className="article-card__date">{beautifyDate(date)}</span>}
+          {source && <Source className="article-card__source">{source}</Source>}
         </div>
       </div>
     </Link>

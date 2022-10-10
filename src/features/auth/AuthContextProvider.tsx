@@ -1,106 +1,115 @@
-import React, { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
-import { TAuthContext, TLoginWithEmailAndPasswordResult } from './types';
-import { FirebaseApp } from 'firebase/app';
+import React, { createContext, FC, useContext, useEffect, useState } from 'react';
 import {
   getAuth,
-  User,
   signInWithEmailAndPassword,
   browserLocalPersistence,
   signOut,
+  UserCredential,
   signInWithPopup,
   ProviderId,
   GoogleAuthProvider,
   GithubAuthProvider,
-  UserCredential,
 } from 'firebase/auth';
-import { getDoc, getFirestore, doc } from 'firebase/firestore';
+import { FirebaseApp } from 'firebase/app';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { firebaseApp } from '@app/api';
+import { TAuthContext } from './types';
 
-const authContext = createContext<TAuthContext>({
-  isAuthenticate: null,
-  user: null,
-  loginWithEmailAndPass: () => Promise.reject({}),
-  loginWithPopup: () => Promise.reject({}),
-  logOut: () => undefined,
-});
+type TProps = {
+  children: React.ReactNode;
+  firebaseApp: FirebaseApp;
+};
 
 export const ALLOWED_OAUTH_PROVIDERS: Record<string, any> = {
   [ProviderId.GOOGLE]: new GoogleAuthProvider(),
   [ProviderId.GITHUB]: new GithubAuthProvider(),
 };
 
-export const useAuth = (): TAuthContext => useContext(authContext);
+export const authContext = createContext<TAuthContext>({
+  isAuthenticated: null,
+  loginWithEmailAndPassword: () => Promise.reject({}),
+  loginWithOauthPopup: () => Promise.reject({}),
+  logOut: () => void 0,
+});
+
+export const useAuthContext = (): TAuthContext => {
+  return useContext<TAuthContext>(authContext);
+};
 
 const isUserAdmin = async (firebaseApp: FirebaseApp) => {
   const db = getFirestore(firebaseApp);
   return await getDoc(doc(db, '/internal/auth'));
 };
 
-interface Props {
-  app: FirebaseApp;
-  children: ReactNode;
-}
+export const AuthContextProvider: FC<TProps> = (props) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<TAuthContext['isAuthenticated']>(null);
+  const [user, setUser] = useState<any>(null);
+  const [auth] = useState(getAuth(props.firebaseApp));
 
-export const AuthContextProvider: FC<Props> = ({ children, app }) => {
-  const [isAuthenticate, setIsAuthenticate] = useState<TAuthContext['isAuthenticate']>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [auth] = useState(getAuth(app));
+  useEffect(() => {
+    if (!auth) {
+      return;
+    }
+    auth.setPersistence(browserLocalPersistence);
+    auth.languageCode = 'ru';
 
-  const processLogin = (loginPromise: Promise<UserCredential>): Promise<TLoginWithEmailAndPasswordResult> => {
+    auth.onAuthStateChanged((user) => {
+      // console.log('auth changed', user);
+      if (user) {
+        isUserAdmin(firebaseApp)
+          .then(() => {
+            setUser(user);
+            setIsAuthenticated(true);
+          })
+          .catch((e) => {
+            // eslint-disable-next-line no-console
+            console.error(e);
+            setUser(null);
+            setIsAuthenticated(false);
+            signOut(auth);
+          });
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    });
+  }, [auth]);
+
+  const processLogin = (loginPromise: Promise<UserCredential>) => {
     setUser(null);
-    setIsAuthenticate(null);
+    setIsAuthenticated(null);
     return loginPromise
-      .then((res) => {
-        return res;
+      .then((result) => {
+        // log success auth
+        return result;
       })
       .catch((error) => {
-        console.log(`login error: ${error.message}`);
+        // log auth errors
         throw error;
       });
   };
 
-  const loginWithEmailAndPass = (email: string, password: string) => {
+  const loginWithEmailAndPassword = (email: string, password: string) => {
     return processLogin(signInWithEmailAndPassword(auth, email, password));
   };
 
-  const loginWithPopup = (provider: string) => {
-    return processLogin(signInWithPopup(auth, ALLOWED_OAUTH_PROVIDERS[provider]));
+  const loginWithOauthPopup = (providerId: string) => {
+    return processLogin(signInWithPopup(auth, ALLOWED_OAUTH_PROVIDERS[providerId]));
   };
-
-  useEffect(() => {
-    auth.setPersistence(browserLocalPersistence);
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        isUserAdmin(app)
-          .then(() => {
-            setIsAuthenticate(true);
-            setUser(user);
-          })
-          .catch(() => {
-            logOut();
-            setUser(null);
-            setIsAuthenticate(false);
-          });
-      } else {
-        setUser(null);
-        setIsAuthenticate(false);
-      }
-    });
-  }, [auth]);
 
   const logOut = () => signOut(auth);
 
   return (
     <authContext.Provider
       value={{
-        isAuthenticate,
+        isAuthenticated,
         user,
-        loginWithEmailAndPass,
-        loginWithPopup,
+        loginWithEmailAndPassword,
+        loginWithOauthPopup,
         logOut,
       }}
     >
-      {children}
+      {props.children}
     </authContext.Provider>
   );
 };
