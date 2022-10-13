@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { HomePage } from '@features/articlesList/components/HomePage/HomePage';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArticlePage } from '@features/articleItem/components/ArticlePage/ArticlePage';
 import { Page } from '@components/Page/Page';
 import { AdminPage } from '@features/admin/components/AdminPage/AdminPage';
@@ -12,9 +12,13 @@ import { CategoryPage } from '@features/categoryArticles/components/CategoryPage
 
 export const App = () => {
   const { pathname } = useLocation();
+  const prevPathname = useRef(pathname);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (pathname !== prevPathname.current) {
+      prevPathname.current = pathname;
+      window.scrollTo(0, 0);
+    }
   }, [pathname]);
 
   return (

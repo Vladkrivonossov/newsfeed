@@ -47,7 +47,3 @@
 .article-page__related-articles-item {
   grid-column: span 4;
 }
-
-.article-page__source {
-  cursor: pointer;
-}

@@ -3,7 +3,6 @@
   font-size: 16px;
   line-height: 24px;
   padding: 8px 20px;
-  cursor: pointer;
   background: var(--constant-accent);
   color: var(--constant-white);
   border-radius: 4px;
