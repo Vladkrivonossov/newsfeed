@@ -29,9 +29,9 @@ export const HeroSkeleton: React.FC<HeroSkeletonProps> = ({ hasImage = true, tit
           <div className="hero__content" style={{ width: title ? undefined : '100%' }}>
             <Title className="hero__title">{title || <SkeletonText dark />}</Title>
             {hasText && (
-              <p className="hero__text">
+              <div className="hero__text">
                 <SkeletonText rowsCount={2} dark />
-              </p>
+              </div>
             )}
           </div>
         </div>

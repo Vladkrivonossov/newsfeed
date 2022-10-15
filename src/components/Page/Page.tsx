@@ -16,16 +16,15 @@ export const Page: FC<Props> = ({ children }) => {
 
   return (
     <>
-      {emailModalShown && (
-        <EmailModal
-          onClose={() => {
-            localStorage.setItem(LS_EMAIL_SHOWN_KEY, 'true');
-            setEmailModalShown(false);
-          }}
-        >
-          Hello
-        </EmailModal>
-      )}
+      <EmailModal
+        shown={emailModalShown}
+        onClose={() => {
+          localStorage.setItem(LS_EMAIL_SHOWN_KEY, 'true');
+          setEmailModalShown(false);
+        }}
+      >
+        Hello
+      </EmailModal>
       <header className="header">
         <div className="container header__container">
           <Logo />

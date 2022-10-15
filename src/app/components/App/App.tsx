@@ -11,7 +11,8 @@ import { LoginContainer } from '@features/auth/login/LoginContainer';
 import { CategoryPage } from '@features/categoryArticles/components/CategoryPage/CategoryPage';
 
 export const App = () => {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
   const prevPathname = useRef(pathname);
 
   useEffect(() => {
@@ -22,69 +23,71 @@ export const App = () => {
   }, [pathname]);
 
   return (
-    <Routes>
-      <Route
-        path="/login"
-        element={
-          <Page>
-            <LoginContainer />
-          </Page>
-        }
-      />
-      <Route element={<PrivateRoute />}>
+    <div>
+      <Routes location={location}>
         <Route
-          path="/admin"
+          path="/login"
           element={
-            <AdminPage>
-              <AdminArticles />
-            </AdminPage>
+            <Page>
+              <LoginContainer />
+            </Page>
           }
         />
-      </Route>
-      <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRoute />}>
+          <Route
+            path="/admin"
+            element={
+              <AdminPage>
+                <AdminArticles />
+              </AdminPage>
+            }
+          />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route
+            path="/admin/create"
+            element={
+              <AdminPage>
+                <AdminArticleItem />
+              </AdminPage>
+            }
+          />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route
+            path="/admin/edit/:id"
+            element={
+              <AdminPage>
+                <AdminArticleItem />
+              </AdminPage>
+            }
+          />
+        </Route>
         <Route
-          path="/admin/create"
+          path="/"
           element={
-            <AdminPage>
-              <AdminArticleItem />
-            </AdminPage>
+            <Page>
+              <HomePage />
+            </Page>
           }
         />
-      </Route>
-      <Route element={<PrivateRoute />}>
         <Route
-          path="/admin/edit/:id"
+          path="/:category"
           element={
-            <AdminPage>
-              <AdminArticleItem />
-            </AdminPage>
+            <Page>
+              <CategoryPage />
+            </Page>
           }
         />
-      </Route>
-      <Route
-        path="/"
-        element={
-          <Page>
-            <HomePage />
-          </Page>
-        }
-      />
-      <Route
-        path="/:category"
-        element={
-          <Page>
-            <CategoryPage />
-          </Page>
-        }
-      />
-      <Route
-        path="/article/:id"
-        element={
-          <Page>
-            <ArticlePage />
-          </Page>
-        }
-      />
-    </Routes>
+        <Route
+          path="/article/:id"
+          element={
+            <Page>
+              <ArticlePage />
+            </Page>
+          }
+        />
+      </Routes>
+    </div>
   );
 };

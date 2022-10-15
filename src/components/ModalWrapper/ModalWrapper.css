@@ -4,7 +4,7 @@
   height: 100%;
   left: 0;
   top: 0;
-  background: var(--constant-overlay-black-alpha64);
+  background: var(--constant-black-alpha64);
   display: flex;
 }
 
@@ -14,4 +14,22 @@
 
 .modal-wrapper--alignX-center {
   justify-content: center;
+}
+
+.modal-wrapper-animation-enter {
+  opacity: 0;
+}
+
+.modal-wrapper-animation-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.modal-wrapper-animation-exit {
+  opacity: 1;
+}
+
+.modal-wrapper-animation-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in;
 }
