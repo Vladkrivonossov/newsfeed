@@ -21,6 +21,7 @@
 }
 
 .home-page__promo {
+  margin-bottom: 60px;
   height: 300px;
   background: var(--constant-black);
 }

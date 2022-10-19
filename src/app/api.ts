@@ -25,12 +25,12 @@ export let firebaseApp: FirebaseApp;
 
 export const initializeAPI = (): FirebaseApp => {
   firebaseApp = initializeApp({
-    apiKey: 'AIzaSyBFhFVJCx9eMtUu_sXmHOTZN6xVQzXGU6Y',
-    authDomain: 'karpov-news.firebaseapp.com',
-    projectId: 'karpov-news',
-    storageBucket: 'karpov-news.appspot.com',
-    messagingSenderId: '1047898012019',
-    appId: '1:1047898012019:web:0e1d222393763b5856ed06',
+    apiKey: 'AIzaSyD3EjxhIwsC4ZqEiU-dlKBAWjkYlNYZ9Z0',
+    authDomain: 'karpov-news-349ee.firebaseapp.com',
+    projectId: 'karpov-news-349ee',
+    storageBucket: 'karpov-news-349ee.appspot.com',
+    messagingSenderId: '109402941601',
+    appId: '1:109402941601:web:2d89135be1611eb72f68e0',
   });
 
   getAuth(firebaseApp);

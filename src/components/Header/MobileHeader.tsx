@@ -55,7 +55,7 @@ export const MobileHeader: FC = () => {
                 К меню
               </button>
             ) : (
-              <Navigation className="header__mobile-navigation" />
+              <Navigation onClick={() => toggleMenu(false)} className="header__mobile-navigation" />
             )}
 
             <div
