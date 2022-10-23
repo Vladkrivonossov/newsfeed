@@ -9,6 +9,7 @@ import { AdminArticleItem } from '@features/admin/components/AdminArticleItem/Ad
 import { PrivateRoute } from '@features/auth/components/PrivateRoute/PrivateRoute';
 import { LoginContainer } from '@features/auth/login/LoginContainer';
 import { CategoryPage } from '@features/categoryArticles/components/CategoryPage/CategoryPage';
+import { OfflineNotificationWatcher } from '@features/networkStatus/OfflineNotificationWatcher/OfflineNotificationWatcher';
 
 export const App = () => {
   const location = useLocation();
@@ -88,6 +89,7 @@ export const App = () => {
           }
         />
       </Routes>
+      <OfflineNotificationWatcher />
     </div>
   );
 };

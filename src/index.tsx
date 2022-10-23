@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import React from 'react';
 import '@app/common.css';
 import { App } from '@app/components/App/App';
@@ -7,16 +7,27 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthContextProvider } from '@features/auth/AuthContextProvider';
 import { store } from '@app/store';
 import { Provider } from 'react-redux';
+import { NetworkStatusContextProvider } from '@features/networkStatus/NetworkStatusContextProvider';
 
 const app = initializeAPI();
 
-ReactDOM.render(
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/sw.js')
+    .then(() => console.log('sw register success'))
+    .catch((e) => console.log(`sw register error => ${e}`));
+}
+
+const root = createRoot(document.getElementById('root') as HTMLElement);
+
+root.render(
   <Provider store={store}>
-    <AuthContextProvider firebaseApp={app}>
-      <Router>
-        <App />
-      </Router>
-    </AuthContextProvider>
-  </Provider>,
-  document.getElementById('root')
+    <NetworkStatusContextProvider>
+      <AuthContextProvider firebaseApp={app}>
+        <Router>
+          <App />
+        </Router>
+      </AuthContextProvider>
+    </NetworkStatusContextProvider>
+  </Provider>
 );

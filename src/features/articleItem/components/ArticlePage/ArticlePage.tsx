@@ -18,10 +18,11 @@ import { HeroSkeleton } from '@components/Hero/HeroSkeleton';
 import { SkeletonText } from '@components/SkeletonText/SkeletonText';
 import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
 import { useAdaptive } from '@app/hooks';
+import { Dispatch } from '@app/store';
 
 export const ArticlePage: FC = () => {
   const { id }: { id?: string } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const articleItem = useSelector(getCachedArticleItem(Number(id)));
   const relatedArticles = useSelector(getRelatedArticles(Number(id)));
   const sources = useSelector(getSources);
@@ -33,7 +34,10 @@ export const ArticlePage: FC = () => {
       setLoading(true);
       //eslint-disable-next-line
       //@ts-ignore
-      Promise.all([dispatch(fetchArticleItem(Number(id))), dispatch(fetchRelatedArticles(Number(id)))]).then(() => {
+      Promise.all([
+        dispatch(fetchArticleItem(Number(id))).unwrap(),
+        dispatch(fetchRelatedArticles(Number(id))).unwrap(),
+      ]).then(() => {
         setLoading(false);
       });
     }
