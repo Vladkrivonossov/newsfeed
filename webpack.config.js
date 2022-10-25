@@ -9,6 +9,9 @@ const mode = process.env.NODE_ENV || 'production';
 
 module.exports = {
   mode: mode,
+  stats: {
+    children: true,
+  },
   entry: {
     main: './src/index.tsx',
     initColorScheme: './src/features/colorScheme/initColorScheme.ts',
@@ -39,7 +42,12 @@ module.exports = {
         },
       },
       {
-        test: /\.(svg|jpg)$/,
+        test: /\.(svg|jpg|png)$/,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.webmanifest$/i,
+        use: 'webpack-webmanifest-loader',
         type: 'asset/resource',
       },
       {
@@ -63,6 +71,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      favicon: './src/images/icon.ico',
       template: './src/app/index.html',
       excludeChunks: ['sw'],
     }),
