@@ -6,7 +6,7 @@ import './Logo.css';
 export const Logo = () => {
   return (
     <NavLink to="/" className="logo">
-      <img className="logo__image" src={logo} alt="logo" />
+      <img className="logo__image" src={logo} alt="Главная страница" />
     </NavLink>
   );
 };

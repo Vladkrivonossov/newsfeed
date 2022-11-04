@@ -6,25 +6,25 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "../images/icon_512.png",
+      "src": "./icons/icon_512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "../images/icon_192.png",
+      "src": "./icons/icon_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "../images/icon_512_bordered.png",
+      "src": "./icons/icon_512_bordered.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "../images/icon_192_bordered.png",
+      "src": "./icons/icon_192_bordered.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"

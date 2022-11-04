@@ -15,7 +15,7 @@ module.exports = {
   entry: {
     main: './src/index.tsx',
     initColorScheme: './src/features/colorScheme/initColorScheme.ts',
-    se: './src/features/serviceWorker/service.worker.ts',
+    sw: './src/features/serviceWorker/service.worker.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -42,12 +42,12 @@ module.exports = {
         },
       },
       {
-        test: /\.(svg|jpg|png)$/,
+        test: /\.(svg|jpg|png|jpeg)$/,
         type: 'asset/resource',
       },
       {
         test: /\.webmanifest$/i,
-        use: 'webpack-webmanifest-loader',
+        use: 'nm_webpack_json',
         type: 'asset/resource',
       },
       {
