@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import './ArticleCard.css';
 import { Source } from '@features/sources/components/Source/Source';
 import { beautifyDate } from '@app/utils';
-import { categoryTitles } from '@features/categories/constants';
 import { CategoryNames } from '@features/categories/types';
 import { Image } from '@components/Image/Image';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   id: number;
@@ -29,6 +29,7 @@ export const ArticleCard: FC<Props> = ({
   description = '',
   category,
 }) => {
+  const { t, i18n } = useTranslation();
   const hasDescription = description.length > 0;
   const hasImage = image.length > 0;
 
@@ -49,8 +50,8 @@ export const ArticleCard: FC<Props> = ({
           <h3 className="article-card__title">{title}</h3>
           {hasDescription && <span className="article-card__description">{description}</span>}
           <div className="article-card__info">
-            {category && category.length && <span className="article-card__category">{categoryTitles[category]}</span>}
-            {date && <span className="article-card__date">{beautifyDate(date)}</span>}
+            {category && category.length && <span className="article-card__category">{t(`category_${category}`)}</span>}
+            {date && <span className="article-card__date">{beautifyDate(date, i18n.language)}</span>}
             {source && <Source className="article-card__source">{source}</Source>}
           </div>
         </div>

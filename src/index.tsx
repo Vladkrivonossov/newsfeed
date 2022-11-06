@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthContextProvider } from '@features/auth/AuthContextProvider';
 import { store } from '@app/store';
 import { Provider } from 'react-redux';
+import { initI18n } from '@features/locale/utils';
 import { NetworkStatusContextProvider } from '@features/networkStatus/NetworkStatusContextProvider';
 
 const app = initializeAPI();
@@ -20,14 +21,16 @@ if ('serviceWorker' in navigator) {
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
-root.render(
-  <Provider store={store}>
-    <NetworkStatusContextProvider>
-      <AuthContextProvider firebaseApp={app}>
-        <Router>
-          <App />
-        </Router>
-      </AuthContextProvider>
-    </NetworkStatusContextProvider>
-  </Provider>
-);
+initI18n(() => {
+  root.render(
+    <Provider store={store}>
+      <NetworkStatusContextProvider>
+        <AuthContextProvider firebaseApp={app}>
+          <Router>
+            <App />
+          </Router>
+        </AuthContextProvider>
+      </NetworkStatusContextProvider>
+    </Provider>
+  );
+});

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './CategoryPage.css';
 import { CategoryNames } from '@features/categories/types';
-import { categoryIds, categoryTitles } from '@features/categories/constants';
+import { categoryIds } from '@features/categories/constants';
 import { Hero } from '@components/Hero/Hero';
 import { ArticleCard } from '@components/ArticleCard/ArticleCard';
 import { Dispatch } from '@app/store';
@@ -17,6 +17,7 @@ import { repeat } from '@app/utils';
 import { useAdaptive } from '@app/hooks';
 import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
 import { SidebarArticleCard } from '@components/SidebarArticleCard/SidebarArticleCard';
+import { useTranslation } from 'react-i18next';
 
 export const CategoryPage: FC = () => {
   //eslint-disable-next-line
@@ -28,21 +29,22 @@ export const CategoryPage: FC = () => {
   const sources = useSelector(getSources);
   const [loading, setLoading] = useState(true);
   const { isMobile, isDesktop } = useAdaptive();
+  const { i18n, t } = useTranslation();
 
   React.useEffect(() => {
     setLoading(true);
-    dispatch(fetchCategoryArticles(categoryIds[category]))
+    dispatch(fetchCategoryArticles({ lang: i18n.language, id: categoryIds[category] }))
       .unwrap()
       .then(() => {
         setLoading(false);
       });
-  }, [category]);
+  }, [category, i18n.language]);
 
   if (loading) {
     return (
       <div aria-hidden>
         <div className="category-page" aria-label="Загрузка">
-          <HeroSkeleton title={categoryTitles[category]} className="category-page__hero" />
+          <HeroSkeleton title={t(`category_${category}`)} className="category-page__hero" />
           <div className="container grid">
             <section className="category-page__content">
               {repeat((i) => {
@@ -67,7 +69,7 @@ export const CategoryPage: FC = () => {
   return (
     <div className="category-page">
       <Hero
-        title={categoryTitles[category]}
+        title={t(`category_${category}`)}
         image={require(`@images/categories/${category}.jpg`)}
         className="category-page__hero"
       />

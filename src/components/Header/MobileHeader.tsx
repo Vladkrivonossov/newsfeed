@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Logo } from '@components/Logo/Logo';
 import { Navigation } from '@components/Navigation/Navigation';
@@ -6,31 +6,28 @@ import { CSSTransition } from 'react-transition-group';
 import { Burger } from '@components/Icons/Burger';
 import { Cross } from '@components/Icons/Cross';
 import { ColorSchemeSwitcherMobile } from '@features/colorScheme/components/ColorSchemeSwitcherMobile/ColorSchemeSwitcherMobile';
-import { createFocusTrap } from 'focus-trap';
+import { LocaleSwitcherMobile } from '@features/locale/components/LocaleSwitcherMobile/LocaleSwitcherMobile';
 
 export const MobileHeader: FC = () => {
   const [isOpenMenu, toggleMenu] = useState(false);
   const [isOpenSubMenu, toggleSubMenu] = useState(false);
+  const [selectedSubMenu, selectSubMenu] = useState<'locale' | 'scheme' | null>(null);
   const documentKeydownListener = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       toggleMenu(false);
     }
   };
-
-  const ref = useRef<HTMLElement | null>(null);
+  const closeSubMenu = () => {
+    toggleSubMenu(false);
+    selectSubMenu(null);
+  };
 
   useEffect(() => {
-    const trap = createFocusTrap(ref.current as HTMLElement, {
-      allowOutsideClick: true,
-    });
-
     if (isOpenMenu) {
-      trap.activate();
       document.documentElement.classList.add('--prevent-scroll');
     }
 
     return () => {
-      trap.deactivate();
       document.documentElement.classList.remove('--prevent-scroll');
     };
   }, [isOpenMenu]);
@@ -48,14 +45,10 @@ export const MobileHeader: FC = () => {
   }, [isOpenMenu]);
 
   return (
-    <header className="header" ref={ref}>
+    <header className="header">
       <div className="container header__mobile-container">
         <Logo />
-        <button
-          aria-label={isOpenMenu ? 'Скрыть меню' : 'Открыть меню'}
-          className="header__mobile-button"
-          onClick={() => toggleMenu(!isOpenMenu)}
-        >
+        <button className="header__mobile-button" onClick={() => toggleMenu(!isOpenMenu)}>
           {isOpenMenu ? <Cross /> : <Burger />}
         </button>
       </div>
@@ -64,17 +57,37 @@ export const MobileHeader: FC = () => {
           <div className="header__mobile-backdrop" />
           <div className="header__mobile-menu">
             {isOpenSubMenu ? (
-              <button className="header__mobile-back-button" onClick={() => toggleSubMenu(false)}>
+              <button className="header__mobile-back-button" onClick={closeSubMenu}>
                 К меню
               </button>
             ) : (
-              <Navigation onClick={() => toggleMenu(false)} className="header__mobile-navigation" />
+              <Navigation className="navigation--mobile" />
             )}
 
             <div
               className={classNames('header__mobile-controls', { 'header__mobile-controls--hasMenu': isOpenSubMenu })}
             >
-              <ColorSchemeSwitcherMobile isMenuActive={isOpenSubMenu} onClickSchemeButton={() => toggleSubMenu(true)} />
+              {(!isOpenSubMenu || (isOpenSubMenu && selectedSubMenu === 'locale')) && (
+                <LocaleSwitcherMobile
+                  isMenuActive={isOpenSubMenu}
+                  onClickLocaleButton={() => {
+                    selectSubMenu('locale');
+                    toggleSubMenu(true);
+                  }}
+                  onChangeLocale={closeSubMenu}
+                />
+              )}
+
+              {(!isOpenSubMenu || (isOpenSubMenu && selectedSubMenu === 'scheme')) && (
+                <ColorSchemeSwitcherMobile
+                  isMenuActive={isOpenSubMenu}
+                  onClickSchemeButton={() => {
+                    selectSubMenu('scheme');
+                    toggleSubMenu(true);
+                  }}
+                  onChangeScheme={closeSubMenu}
+                />
+              )}
             </div>
           </div>
         </div>

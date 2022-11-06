@@ -1,4 +1,11 @@
-export type CategoryNames = 'politics' | 'sport' | 'tech' | 'karpov.courses' | 'fashion' | 'other';
+export enum CategoryNames {
+  politics = 'politics',
+  sport = 'sport',
+  tech = 'tech',
+  fashion = 'fashion',
+  'karpov.courses' = 'karpov.courses',
+  other = 'other',
+}
 
 export interface Category {
   id: number;

@@ -1,0 +1,11 @@
+{
+  "home_page_trends_title": "Trends",
+  "category_news": "News",
+  "category_fashion": "Fashion",
+  "category_sport": "Sport",
+  "category_politics": "Politics",
+  "category_karpov.courses": "Karpov",
+  "category_tech": "Technology",
+  "category_other": "Other",
+  "footer_link": "Made on Frontend course in {link}"
+}

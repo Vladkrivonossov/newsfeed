@@ -1,0 +1,11 @@
+{
+  "home_page_trends_title": "В тренде",
+  "category_news": "Новости",
+  "category_fashion": "Мода",
+  "category_sport": "Спорт",
+  "category_politics": "Политика",
+  "category_karpov.courses": "Karpov",
+  "category_tech": "Технологии",
+  "category_other": "Другие",
+  "footer_link": "Сделано на Frontend курсе в {link}"
+}

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './ArticlePage.css';
 import { beautifyDate, repeat } from '@app/utils';
-import { categoryTitles } from '@features/categories/constants';
 import { SidebarArticleCard } from '@components/SidebarArticleCard/SidebarArticleCard';
 import { Hero } from '@components/Hero/Hero';
 import { ArticleCard } from '@components/ArticleCard/ArticleCard';
@@ -19,6 +18,7 @@ import { SkeletonText } from '@components/SkeletonText/SkeletonText';
 import { SidebarArticleCardSkeleton } from '@components/SidebarArticleCard/SidebarArticleCardSkeleton';
 import { useAdaptive } from '@app/hooks';
 import { Dispatch } from '@app/store';
+import { useTranslation } from 'react-i18next';
 
 export const ArticlePage: FC = () => {
   const { id }: { id?: string } = useParams();
@@ -28,6 +28,7 @@ export const ArticlePage: FC = () => {
   const sources = useSelector(getSources);
   const [loading, setLoading] = useState(!articleItem?.text);
   const { isDesktop } = useAdaptive();
+  const { i18n, t } = useTranslation();
 
   React.useEffect(() => {
     if (!articleItem?.text) {
@@ -86,8 +87,8 @@ export const ArticlePage: FC = () => {
       <Hero title={articleItem.title} image={articleItem.image} className="article-page__hero" />
       <div className="container article-page__main">
         <section className="article-page__info" aria-label="Информация о статье">
-          <span className="article-page__category">{categoryTitles[articleItem.category.name]}</span>
-          <span className="article-page__date">{beautifyDate(articleItem.date)}</span>
+          <span className="article-page__category">{t(`category_${articleItem.category.name}`)}</span>
+          <span className="article-page__date">{beautifyDate(articleItem.date, i18n.language)}</span>
           {articleItem.link.length > 0 && (
             <Source className="article-page__source" href={articleItem.link}>
               {articleItem.source?.name}
