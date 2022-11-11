@@ -5,7 +5,9 @@
     "eslint": "eslint --ext .ts,.tsx,.js ./",
     "stylelint": "stylelint \"src/{**/*,*}.css\"",
     "prettier": "prettier --write ./",
-    "prettier-check": "prettier --check ./"
+    "prettier-check": "prettier --check ./",
+    "locale:upload": "localazy upload",
+    "locale:download": "localazy download"
   },
   "dependencies": {
     "@babel/cli": "^7.18.10",
@@ -13,6 +15,7 @@
     "@babel/preset-react": "^7.18.6",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@localazy/cli": "^1.6.3",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.3",
     "@reduxjs/toolkit": "^1.8.6",

@@ -1,0 +1,17 @@
+{
+  "writeKey": "a8011035071474539072-c1c8d215879576ccd0d5066fd954e6a959bb0d610a6a1e9cc7156dfe5dd39456",
+  "readKey": "a8011035071474539072-198eb341967a29583549de654531182e5cbe67fa53e10e3e08ab465fe0213fc6",
+
+  "upload": {
+    "type": "json",
+    "files": {
+      "pattern": "src/features/locale/translations/*.json",
+      "lang": "${autodetectLang}"
+    }
+  },
+
+  "download": {
+    "files": "src/features/locale/translations/${lang}.json",
+    "includeSourceLang": true
+  }
+}

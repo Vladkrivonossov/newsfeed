@@ -1,10 +1,13 @@
 import React from 'react';
 import './OfflineNotification.css';
+import { useTranslation } from 'react-i18next';
 
 export const OfflineNotification = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="offline-notification" role="status">
-      Сайт работает в оффлайне, проверьте своё подключение
+      {t('offline_notification_text')}
     </div>
   );
 };

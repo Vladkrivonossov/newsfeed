@@ -33,7 +33,7 @@ export const Navigation: FC<Props> = ({ className = '' }) => {
   return (
     <nav className={classNames('navigation', className)}>
       <ul className="navigation__list">
-        <NavigationItem title="Новости" />
+        <NavigationItem title={t('category_news')} />
         {Object.values(CategoryNames)
           .slice(0, 5)
           .map((name) => {

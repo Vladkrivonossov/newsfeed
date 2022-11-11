@@ -86,21 +86,17 @@ export const AdminArticleItem: FC = () => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // 1. Собрать данные
     const data = new FormData();
 
     Object.entries(inputValues).forEach(([name, value]) => {
       data.append(name, value);
     });
 
-    // 2. Проверить данные
     const errors = await getErrors(Array.from(data.entries()) as [InputName, FormDataEntryValue][]);
     const errorsEntries = Object.entries(errors);
 
-    // 3.1 Подстветить ошибки
     setInputErrors(errors);
 
-    // 3.2 Сфокусироваться на первом ошибочном инпуте
     const errorInput = errorsEntries.find(([, value]) => value.length > 0);
 
     if (errorInput) {
@@ -114,7 +110,6 @@ export const AdminArticleItem: FC = () => {
       return;
     }
 
-    // 4. Если все ок, отправить данные
     if (id) {
       updatePartnerArticle(id, inputValues)
         .then(() => {

@@ -43,7 +43,7 @@ export const CategoryPage: FC = () => {
   if (loading) {
     return (
       <div aria-hidden>
-        <div className="category-page" aria-label="Загрузка">
+        <div className="category-page" aria-label={t('loading')}>
           <HeroSkeleton title={t(`category_${category}`)} className="category-page__hero" />
           <div className="container grid">
             <section className="category-page__content">

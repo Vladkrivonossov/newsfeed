@@ -7,8 +7,11 @@ import { Burger } from '@components/Icons/Burger';
 import { Cross } from '@components/Icons/Cross';
 import { ColorSchemeSwitcherMobile } from '@features/colorScheme/components/ColorSchemeSwitcherMobile/ColorSchemeSwitcherMobile';
 import { LocaleSwitcherMobile } from '@features/locale/components/LocaleSwitcherMobile/LocaleSwitcherMobile';
+import { useTranslation } from 'react-i18next';
 
 export const MobileHeader: FC = () => {
+  const { t } = useTranslation();
+
   const [isOpenMenu, toggleMenu] = useState(false);
   const [isOpenSubMenu, toggleSubMenu] = useState(false);
   const [selectedSubMenu, selectSubMenu] = useState<'locale' | 'scheme' | null>(null);
@@ -58,7 +61,7 @@ export const MobileHeader: FC = () => {
           <div className="header__mobile-menu">
             {isOpenSubMenu ? (
               <button className="header__mobile-back-button" onClick={closeSubMenu}>
-                К меню
+                {t('header_mobile_submenu')}
               </button>
             ) : (
               <Navigation className="navigation--mobile" />
