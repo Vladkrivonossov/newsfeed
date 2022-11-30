@@ -11,7 +11,7 @@ import {
   GithubAuthProvider,
 } from 'firebase/auth';
 import { FirebaseApp } from 'firebase/app';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, getDoc, initializeFirestore } from 'firebase/firestore';
 import { firebaseApp } from '@app/api';
 import { TAuthContext } from './types';
 
@@ -36,8 +36,10 @@ export const useAuthContext = (): TAuthContext => {
   return useContext<TAuthContext>(authContext);
 };
 
-const isUserAdmin = async (firebaseApp: FirebaseApp) => {
-  const db = getFirestore(firebaseApp);
+export const isUserAdmin = async (firebaseApp: FirebaseApp) => {
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
   return await getDoc(doc(db, '/internal/auth'));
 };
 

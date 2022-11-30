@@ -16,17 +16,16 @@ import { IconButton } from '@mui/material';
 import { useAuthContext } from '@features/auth/AuthContextProvider';
 
 const drawerWidth = 300;
-
 interface AdminPageProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
-export const AdminPage: FC<AdminPageProps> = ({ children }) => {
+const AdminPage: FC<AdminPageProps> = ({ children }) => {
   const { isAuthenticated, logOut } = useAuthContext();
   const navigate = useNavigate();
   const onLogOut = () => {
     logOut();
-    navigate('/admin');
+    navigate('/admin/login');
   };
   return (
     <Box sx={{ display: 'flex' }}>
@@ -71,3 +70,5 @@ export const AdminPage: FC<AdminPageProps> = ({ children }) => {
     </Box>
   );
 };
+
+export default AdminPage;

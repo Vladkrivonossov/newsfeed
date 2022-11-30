@@ -11,7 +11,7 @@ import { Footer } from '@components/Footer/Footer';
 const LS_EMAIL_SHOWN_KEY = 'newsfeed:email_modal_shown';
 
 interface PageProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export const Page: FC<PageProps> = ({ children }) => {

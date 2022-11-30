@@ -24,7 +24,7 @@ import {
   uploadFile,
 } from '@app/api';
 
-export const AdminArticleItem: FC = () => {
+const AdminArticleItem: FC = () => {
   const { id }: { id?: string } = useParams();
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -318,3 +318,5 @@ export const AdminArticleItem: FC = () => {
     </Box>
   );
 };
+
+export default AdminArticleItem;

@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import { IPartnerArticle } from '@features/partnersArticles/types';
 import { getPartnersArticles } from '@app/api';
 
-export const AdminArticles: FC = () => {
+const AdminArticles: FC = () => {
   const [articles, setArticles] = useState<IPartnerArticle[]>([]);
 
   useEffect(() => {
@@ -61,3 +61,5 @@ export const AdminArticles: FC = () => {
     </>
   );
 };
+
+export default AdminArticles;

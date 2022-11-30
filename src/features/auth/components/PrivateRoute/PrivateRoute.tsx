@@ -5,6 +5,7 @@ import { Box, CircularProgress } from '@mui/material';
 
 export const PrivateRoute: FC = () => {
   const { isAuthenticated } = useAuthContext();
+
   if (isAuthenticated === null) {
     return (
       <Box sx={{ textAlign: 'center' }}>
@@ -13,5 +14,5 @@ export const PrivateRoute: FC = () => {
     );
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/admin/login" />;
 };

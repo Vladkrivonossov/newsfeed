@@ -4,6 +4,23 @@
   "description": "K/C News: study project",
   "start_url": "/",
   "display": "standalone",
+  "shortcuts": [
+    {
+      "name": "Fashion news",
+      "short_name": "Fashion",
+      "description": "Open fashion page",
+      "url": "/fashion",
+      "icons": [{ "src": "./icons/icon_192_bordered.png", "sizes": "192x192" }]
+    },
+
+    {
+      "name": "Karpov.coures news",
+      "short_name": "Karpov.courses",
+      "description": "Open Karpov.courses page",
+      "url": "/karpov.courses",
+      "icons": [{ "src": "./icons/icon_192_bordered.png", "sizes": "192x192" }]
+    }
+  ],
   "icons": [
     {
       "src": "./icons/icon_512.png",

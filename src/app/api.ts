@@ -1,25 +1,20 @@
-import { initializeApp, FirebaseApp } from 'firebase/app';
+import { FirebaseApp, initializeApp } from 'firebase/app';
 import {
-  collection,
-  getDocs,
-  getFirestore,
   addDoc,
+  collection,
+  deleteDoc,
   doc,
   getDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  orderBy,
+  getDocs,
+  initializeFirestore,
   limit,
+  orderBy,
+  query,
+  updateDoc,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
-import { ArticleItemAPI } from '@features/articleItem/types';
-import { Category } from '@features/categories/types';
 import { IPartnerArticle } from '@features/partnersArticles/types';
-import { NewsAPI } from '@features/articlesList/types';
-import { RelatedArticlesAPI } from '@features/relatedNews/types';
-import { Source } from '@features/sources/types';
 
 export let firebaseApp: FirebaseApp;
 
@@ -34,15 +29,18 @@ export const initializeAPI = (): FirebaseApp => {
   });
 
   getAuth(firebaseApp);
-  getFirestore(firebaseApp);
   getStorage(firebaseApp);
+
   return firebaseApp;
 };
 
 const partnersPostsCollection = 'partners-posts';
 
 export const getPartnersArticles = async (): Promise<IPartnerArticle[]> => {
-  const db = getFirestore();
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
+
   const articles: IPartnerArticle[] = [];
 
   try {
@@ -64,7 +62,9 @@ export const getPartnersArticles = async (): Promise<IPartnerArticle[]> => {
 };
 
 export const createPartnerArticle = async (data: Omit<IPartnerArticle, 'id' | 'created'>): Promise<any> => {
-  const db = getFirestore();
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
 
   try {
     await addDoc(collection(db, partnersPostsCollection), data);
@@ -74,7 +74,9 @@ export const createPartnerArticle = async (data: Omit<IPartnerArticle, 'id' | 'c
 };
 
 export const updatePartnerArticle = async (id: string, data: Omit<IPartnerArticle, 'id' | 'created'>): Promise<any> => {
-  const db = getFirestore();
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
   const ref = doc(db, partnersPostsCollection, id);
 
   try {
@@ -85,7 +87,9 @@ export const updatePartnerArticle = async (id: string, data: Omit<IPartnerArticl
 };
 
 export const deletePartnerArticle = async (id: string): Promise<any> => {
-  const db = getFirestore();
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
   const ref = doc(db, partnersPostsCollection, id);
 
   try {
@@ -96,7 +100,9 @@ export const deletePartnerArticle = async (id: string): Promise<any> => {
 };
 
 export const getPartnerArticle = async (id: string): Promise<IPartnerArticle> => {
-  const db = getFirestore();
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
   const docRef = doc(db, partnersPostsCollection, id);
 
   try {
@@ -132,7 +138,9 @@ export const uploadFile = async (file: File): Promise<string> => {
 };
 
 export const getMainPartnerArticle = async (): Promise<IPartnerArticle | null> => {
-  const db = getFirestore();
+  const db = initializeFirestore(firebaseApp, {
+    experimentalForceLongPolling: true,
+  });
   let article = null;
 
   try {
@@ -152,34 +160,4 @@ export const getMainPartnerArticle = async (): Promise<IPartnerArticle | null> =
   }
 
   return article;
-};
-
-export const apiFetchNews = (lang: string): Promise<NewsAPI> => {
-  return fetch(`https://frontend.karpovcourses.net/api/v2/${lang}/news`).then((response) => response.json());
-};
-
-export const apiFetchTrends = (lang: string): Promise<NewsAPI> => {
-  return fetch(`https://frontend.karpovcourses.net/api/v2/${lang}/trends`).then((response) => response.json());
-};
-
-export const apiFetchCategory = (lang: string, id: number): Promise<NewsAPI> => {
-  return fetch(`https://frontend.karpovcourses.net/api/v2/${lang}/news/${id}`).then((response) => response.json());
-};
-
-export const apiFetchCategories = (): Promise<Category[]> => {
-  return fetch('https://frontend.karpovcourses.net/api/v2/categories').then((response) => response.json());
-};
-
-export const apiFetchSources = (): Promise<Source[]> => {
-  return fetch('https://frontend.karpovcourses.net/api/v2/sources').then((response) => response.json());
-};
-
-export const apiFetchRelatedArticles = (id: number): Promise<RelatedArticlesAPI> => {
-  return fetch(`https://frontend.karpovcourses.net/api/v2/news/related/${id}?count=9`).then((response) =>
-    response.json()
-  );
-};
-
-export const apiFetchArticleItem = (id: number): Promise<ArticleItemAPI> => {
-  return fetch(`https://frontend.karpovcourses.net/api/v2/news/full/${id}`).then((response) => response.json());
 };

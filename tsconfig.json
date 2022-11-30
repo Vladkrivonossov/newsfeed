@@ -2,8 +2,10 @@
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
+    "module": "es2020",
+    "moduleResolution": "Node",
     "jsx": "react",
-    "lib": ["dom", "es2017", "dom.iterable", "webworker"],
+    "lib": ["dom", "es2020", "dom.iterable", "webworker"],
     "baseUrl": "src",
     "paths": {
       "@components/*": ["components/*"],

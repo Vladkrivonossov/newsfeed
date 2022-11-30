@@ -3,13 +3,11 @@ import { HomePage } from '@features/articlesList/components/HomePage/HomePage';
 import React, { useEffect, useRef } from 'react';
 import { ArticlePage } from '@features/articleItem/components/ArticlePage/ArticlePage';
 import { Page } from '@components/Page/Page';
-import { AdminPage } from '@features/admin/components/AdminPage/AdminPage';
-import { AdminArticles } from '@features/admin/components/AdminArticles/AdminArticles';
-import { AdminArticleItem } from '@features/admin/components/AdminArticleItem/AdmintArticlesIte';
-import { PrivateRoute } from '@features/auth/components/PrivateRoute/PrivateRoute';
-import { LoginContainer } from '@features/auth/login/LoginContainer';
 import { CategoryPage } from '@features/categoryArticles/components/CategoryPage/CategoryPage';
 import { OfflineNotificationWatcher } from '@features/networkStatus/OfflineNotificationWatcher/OfflineNotificationWatcher';
+import { SuspenseLayout } from '@app/components/SuspenseLayout';
+
+const Admin = React.lazy(() => import('@app/components/Admin'));
 
 export const App = () => {
   const location = useLocation();
@@ -26,44 +24,10 @@ export const App = () => {
   return (
     <div>
       <Routes location={location}>
-        <Route
-          path="/login"
-          element={
-            <Page>
-              <LoginContainer />
-            </Page>
-          }
-        />
-        <Route element={<PrivateRoute />}>
-          <Route
-            path="/admin"
-            element={
-              <AdminPage>
-                <AdminArticles />
-              </AdminPage>
-            }
-          />
+        <Route element={<SuspenseLayout />}>
+          <Route path="/admin/*" element={<Admin />} />
         </Route>
-        <Route element={<PrivateRoute />}>
-          <Route
-            path="/admin/create"
-            element={
-              <AdminPage>
-                <AdminArticleItem />
-              </AdminPage>
-            }
-          />
-        </Route>
-        <Route element={<PrivateRoute />}>
-          <Route
-            path="/admin/edit/:id"
-            element={
-              <AdminPage>
-                <AdminArticleItem />
-              </AdminPage>
-            }
-          />
-        </Route>
+
         <Route
           path="/"
           element={
