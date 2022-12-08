@@ -43,14 +43,19 @@ _self.addEventListener('fetch', (event) => {
         const request = event.request;
 
         const isHtmlPage = request.headers.get('Accept')?.indexOf('text/html') !== -1 && url.startsWith(_self.origin);
-        const isImage = !isHtmlPage && request.headers.get('Accept')?.indexOf('image/') !== -1;
+        const isCacheFirstRequest =
+          !isHtmlPage &&
+          (request.headers.get('Accept')?.indexOf('image/') !== -1 ||
+            (url.startsWith(_self.origin) && url.match(/(\.js|\.css)$/)) ||
+            url.match(/(\.woff.)$/));
         const requestKey = isHtmlPage ? '/' : request;
 
         try {
-          if (isImage) {
-            const cacheItem = await caches.match(requestKey);
-            if (cacheItem) {
-              return cacheItem;
+          if (isCacheFirstRequest) {
+            const cacheResponse = await caches.match(requestKey);
+
+            if (cacheResponse) {
+              return cacheResponse;
             }
           }
 

@@ -7,11 +7,12 @@ import { beautifyDate } from '@app/utils';
 import { CategoryNames } from '@features/categories/types';
 import { Image } from '@components/Image/Image';
 import { useTranslation } from 'react-i18next';
+import { TExtendedImage } from '@features/articleItem/types';
 
 interface Props {
   id: number;
   title: string;
-  image?: string;
+  image?: TExtendedImage;
   category?: CategoryNames;
   description?: string;
   source?: string;
@@ -24,14 +25,14 @@ export const ArticleCard: FC<Props> = ({
   className,
   date = '',
   source = '',
-  image = '',
+  image,
   title,
   description = '',
   category,
 }) => {
   const { t, i18n } = useTranslation();
   const hasDescription = description.length > 0;
-  const hasImage = image.length > 0;
+  const hasImage = image && image?.source.length > 0;
 
   return (
     <Link
@@ -45,7 +46,7 @@ export const ArticleCard: FC<Props> = ({
       )}
     >
       <article className="article-card__in">
-        {hasImage && <Image className="article-card__image" src={image} alt={title} />}
+        {hasImage && <Image className="article-card__image" data={image} alt={title} maxWidth={200} />}
         <div className="article-card__content">
           <h3 className="article-card__title">{title}</h3>
           {hasDescription && <span className="article-card__description">{description}</span>}
