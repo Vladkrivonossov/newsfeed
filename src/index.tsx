@@ -8,12 +8,12 @@ import { Provider } from 'react-redux';
 import { initI18n } from '@features/locale/utils';
 import { NetworkStatusContextProvider } from '@features/networkStatus/NetworkStatusContextProvider';
 
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker
-//     .register('/sw.js')
-//     .then(() => console.log('sw register success'))
-//     .catch((e) => console.log(`sw register error => ${e}`));
-// }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/sw.js')
+    .then(() => console.log('sw register success'))
+    .catch((e) => console.log(`sw register error => ${e}`));
+}
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
