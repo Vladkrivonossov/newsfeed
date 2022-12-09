@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve",
-    "test-optimization": "cross-env NODE_ENV=production webpack serve",
+    "serve": "cross-env NODE_ENV=production webpack serve",
     "build": "webpack",
     "eslint": "eslint --ext .ts,.tsx,.js ./",
     "stylelint": "stylelint \"src/{**/*,*}.css\"",
@@ -20,6 +20,8 @@
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.3",
     "@reduxjs/toolkit": "^1.8.6",
+    "@sentry/react": "^7.24.2",
+    "@sentry/webpack-plugin": "^1.20.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-transition-group": "^4.4.5",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
