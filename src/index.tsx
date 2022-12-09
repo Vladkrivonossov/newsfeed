@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-if (process.env.SENTRY_RELEASE) {
+if (window.SENTRY_RELEASE) {
   Sentry.init({
     dsn: 'https://5a0a8c4a0078468c837cf2cbec39b108@o4504298120937472.ingest.sentry.io/4504298126114816',
   });
