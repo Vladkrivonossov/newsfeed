@@ -20,6 +20,7 @@ export const MobileHeader: FC = () => {
       toggleMenu(false);
     }
   };
+
   const closeSubMenu = () => {
     toggleSubMenu(false);
     selectSubMenu(null);
@@ -64,7 +65,7 @@ export const MobileHeader: FC = () => {
                 {t('header_mobile_submenu')}
               </button>
             ) : (
-              <Navigation className="navigation--mobile" />
+              <Navigation className="navigation--mobile" onClick={() => toggleMenu(false)} />
             )}
 
             <div

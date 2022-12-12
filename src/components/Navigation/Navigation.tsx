@@ -7,18 +7,21 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   className?: string;
+  onClick?: () => void;
 }
 
 interface NavigationItemProps {
   title?: string;
   name?: string;
+  onClick?: () => void;
 }
 
-const NavigationItem: FC<NavigationItemProps> = ({ title, name = '' }) => {
+const NavigationItem: FC<NavigationItemProps> = ({ onClick, title, name = '' }) => {
   return (
     <li className="navigation__item" key={name}>
       <NavLink
         to={`/${name}`}
+        onClick={onClick}
         className={({ isActive }) => 'navigation__link' + (isActive ? ' navigation__link--active' : '')}
       >
         {title}
@@ -27,7 +30,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ title, name = '' }) => {
   );
 };
 
-export const Navigation: FC<Props> = ({ className = '' }) => {
+export const Navigation: FC<Props> = ({ className = '', onClick }) => {
   const { t } = useTranslation();
 
   return (
@@ -37,7 +40,7 @@ export const Navigation: FC<Props> = ({ className = '' }) => {
         {Object.values(CategoryNames)
           .slice(0, 5)
           .map((name) => {
-            return <NavigationItem key={name} name={name} title={t(`category_${name}`)} />;
+            return <NavigationItem onClick={onClick} key={name} name={name} title={t(`category_${name}`)} />;
           })}
       </ul>
     </nav>

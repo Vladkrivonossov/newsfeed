@@ -14,3 +14,7 @@ export function repeat<T>(cb: (i: number) => T, times = 1): T[] {
 
   return res;
 }
+
+export function sum(a: number, b: number): number {
+  return a + b;
+}

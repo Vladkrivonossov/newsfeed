@@ -58,6 +58,7 @@ export const ArticlePage: FC = () => {
 
     return (
       <Hero
+        key={articleItem.id}
         title={articleItem.title}
         autoHeight={autoHeight}
         image={articleItem.image}
