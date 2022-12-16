@@ -48,7 +48,7 @@ export const HomePage: FC = () => {
   if (loading) {
     return (
       <div aria-hidden>
-        <div className="home-page" aria-label={t('loading')}>
+        <div className="home-page" aria-label={t('loading')} data-testid="home-page">
           <div className="home-page__hero-link">
             <HeroSkeleton className="home-page__hero" hasText={true} />
           </div>

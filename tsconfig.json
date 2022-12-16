@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "module": "es2020",
     "moduleResolution": "Node",
+    "types": ["cypress", "cypress-file-upload"],
     "jsx": "react",
     "lib": ["dom", "es2020", "dom.iterable", "webworker"],
     "baseUrl": "src",
@@ -16,6 +17,6 @@
     "resolveJsonModule": true,
     "sourceMap": true
   },
-  "include": ["src"],
+  "include": ["src", "jest-setup.ts", "cypress"],
   "exclude": ["node_modules", "dist", "./src/features/serviceWorker"]
 }
