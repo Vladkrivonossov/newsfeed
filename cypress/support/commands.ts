@@ -14,14 +14,14 @@
 
 declare namespace Cypress {
   interface Chainable {
-    login(): Chainable<Element>
+    login(): Chainable<Element>;
   }
 }
 
 Cypress.Commands.add('login', () => {
-  cy.get(':nth-child(1) > .MuiOutlinedInput-root > .MuiOutlinedInput-input').type('admin@admin.ru')
-  cy.get(':nth-child(2) > .MuiOutlinedInput-root > .MuiOutlinedInput-input').type('7654321')
-  cy.get('.MuiButton-root').click()
+  cy.get(':nth-child(1) > .MuiOutlinedInput-root > .MuiOutlinedInput-input').type('admin@admin.ru');
+  cy.get(':nth-child(2) > .MuiOutlinedInput-root > .MuiOutlinedInput-input').type('7654321');
+  cy.get('.MuiButton-root').click();
 });
 //
 //

@@ -4,12 +4,12 @@ const MockFirestore = {
   getDoc: jest.fn().mockResolvedValue({
     exists: jest.fn(),
     data: jest.fn(),
-    id: jest.fn()
+    id: jest.fn(),
   }),
-}
+};
 
-export const initializeFirestore = MockFirestore.initializeFirestore
-export const doc = MockFirestore.doc
-export const getDoc = MockFirestore.getDoc
+export const initializeFirestore = MockFirestore.initializeFirestore;
+export const doc = MockFirestore.doc;
+export const getDoc = MockFirestore.getDoc;
 
-export default MockFirestore
+export default MockFirestore;

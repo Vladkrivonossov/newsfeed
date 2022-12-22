@@ -7,7 +7,7 @@ module.exports = {
     '^@features(.*)$': '<rootDir>/src/features$1',
     '^@app(.*)$': '<rootDir>/src/app$1',
     '^@images(.*)$': '<rootDir>/src/images$1',
-    ".+\\.(css|styl|less|sass|scss|png|svg|jpg|ttf|woff|woff2)$": "jest-transform-stub"
+    '.+\\.(css|styl|less|sass|scss|png|svg|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
   },
-  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts']
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
 };

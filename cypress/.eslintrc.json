@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "plugin:cypress/recommended"
-  ],
-  "plugins": [
-    "cypress"
-  ],
+  "extends": ["plugin:cypress/recommended"],
+  "plugins": ["cypress"],
   "parser": "@typescript-eslint/parser"
 }
