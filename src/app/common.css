@@ -40,7 +40,7 @@
   color-scheme: dark;
 }
 
-*:not(svg *) {
+*:not(svg *, img) {
   all: unset;
   display: revert;
 }
