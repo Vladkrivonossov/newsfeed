@@ -20,6 +20,7 @@ import { useAdaptive } from '@app/hooks';
 import { Dispatch } from '@app/store';
 import { useTranslation } from 'react-i18next';
 import { ArticleCardSkeleton } from '@components/ArticleCard/ArticleCardSkeleton';
+import ReactMarkdown from 'react-markdown';
 
 export const ArticlePage: FC = () => {
   const { id }: { id?: string } = useParams();
@@ -69,7 +70,11 @@ export const ArticlePage: FC = () => {
 
   const mainContent = useMemo(() => {
     if (articleItem?.text) {
-      return articleItem.text;
+      return (
+        <p>
+          <ReactMarkdown>{articleItem.text}</ReactMarkdown>
+        </p>
+      );
     } else {
       return <SkeletonText rowsCount={6} />;
     }
@@ -101,9 +106,7 @@ export const ArticlePage: FC = () => {
           <div className="container article-page__main">
             <div className="article-page__info">{pageInfo}</div>
             <div className="grid">
-              <div className="article-page__content">
-                <p>{mainContent}</p>
-              </div>
+              <div className="article-page__content">{mainContent}</div>
 
               {isDesktop && (
                 <aside className="article-page__sidebar">
@@ -151,9 +154,7 @@ export const ArticlePage: FC = () => {
             {pageInfo}
           </section>
           <section className="grid" aria-label={t('article_page_grid')}>
-            <div className="article-page__content">
-              <p>{mainContent}</p>
-            </div>
+            <div className="article-page__content">{mainContent}</div>
 
             {isDesktop && (
               <aside className="article-page__sidebar" aria-label={t('article_page_sub_title')}>
