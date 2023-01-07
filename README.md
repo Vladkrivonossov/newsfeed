@@ -15,4 +15,6 @@
 - Firebase
 - Webpack 
 
+___
 
+**Детальней ознакомится с интерфейсом приложения можно [тут](https://krivonosov-newsfeed.netlify.app/)**
